@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mad libs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="kontainer">
+        <h1 class="display-4">Mad Lib</h1>
+        <form class="kol2" action="formular.php" method="POST">
+        
+        <label>Vad är ditt namn?</label>
+        <input type="text" name="namn" required>
+
+        <label>Hur gammal är du?</label>
+        <input type="text" name="alder" required>
+
+        <label>Vilket kön är du?</label>
+        <input type="text" name="kon" required>
+
+        <label>Vad är din favorit mat?</label>
+        <input type="text" name="mat" required>
+
+        <label>Går du på någon sport?</label>
+        <input type="text" name="sport" required>
+
+        <button class="primary">Skicka</button>
+        </form>
+    </div>
+</body>
+</html>

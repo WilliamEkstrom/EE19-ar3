@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Testa lite PHP </h1>
     <?php
-    echo "<p>Mitt namn är William.<br>";
-    echo "Jag bor i järfälla.</p>";
+    $githubNamn = "WilliamEkstrom";
+    $githubUrl = "https://github.com/WilliamEkstrom/EE19-ar3";
+
+    echo "Min repos på github heter $githubNamn och adress dit är $githubUrl";
     ?>
 </body>
 </html>

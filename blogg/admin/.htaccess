@@ -1,0 +1,4 @@
+AuthName        "Bara för medlemmaar"
+AuthType        Basic
+AuthUserFile    /etc/apache2/.htpasswd
+require         valid-user
