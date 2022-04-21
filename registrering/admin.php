@@ -1,11 +1,15 @@
 <?php
 include "konfigdb.php";
 session_start();
+
 if (!isset($_SESSION['inloggad'])) {
     $_SESSION['inloggad'] = false;
 }
-// Ajabaja
-header("Location: login.php");
+
+// Ajabaja! Skickas till login.php
+if ($_SESSION['inloggad'] == false) {
+    header("Location: login.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +25,7 @@ header("Location: login.php");
 
 <body>
     <?php
-    if ($_SESSION['inloggad'] == true) {
+    if (isset($_SESSION['inloggad']) && $_SESSION['inloggad'] == true) {
         echo "<p class=\"alert alert-success\">Du är inloggad</p>";
     } else {
         echo "<p class=\"alert alert-warning\">Du är utloggad</p>";
@@ -44,10 +48,10 @@ header("Location: login.php");
                 } else {
                 ?>
                     <li class="nav-item">
-                        <a class="nav-link active" href="logout.php">Logga ut</a>
+                        <a class="nav-link" href="logout.php">Logga ut</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Admin</a>
+                        <a class="nav-link active" href="admin.php">Admin</a>
                     </li>
                 <?php
                 }
@@ -55,11 +59,41 @@ header("Location: login.php");
             </ul>
         </nav>
         <main>
+            <h3>Admin</h3>
             <?php
-            $_SESSION['inloggad'] = false;
-            echo "<p class=\"alert alert-warning\">Du är utloggad</p>";
+            // Lista alla användare.
 
-            header("Location: login.php");
+            // Steg 1: SQL-Satsen
+            $sql = "SELECT * FROM register";
+
+            // Steg 2: kör SQL-Satsen
+            $resultat = $conn->query($sql);
+
+            if (!$resultat) {
+                die("<p class=\"alert alert-warning\">Någonting blev fel med SQL-satsen!</p>");
+            } else {
+                // Steg 3: Bearbeta resultatet
+                echo "<table class=\"table\">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>namn</th>
+                            <th>epost</th>
+                        </tr>
+                        </thead>
+                        <tbody>";
+                while ($rad = $resultat->fetch_assoc()) {
+                    echo "<tr>
+                            <td>$rad[id]</td>
+                            <td>$rad[namn]</td>
+                            <td>$rad[epost]</td>
+                        </tr>";
+                }
+                echo "</tbody>
+                        </table>";
+            }
+                
+
             ?>
         </main>
     </div>

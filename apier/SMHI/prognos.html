@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SMHI temperaturkurva</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="kontainer">
+        <canvas id="myChart" width="400" height="300"></canvas>
+    </div>
+    <script defer>
+            // Två tomma variabler
+            var klockslag = [];
+            var temperaturer = [];
+
+            // Hämta data från smhi.php
+            // fylla i "klockslag" och "temperaturer"
+            fetch("smhi.php")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(element => {
+                    klockslag.push(element.label);
+                    temperaturer.push(element.t);
+
+                    console.log(klockslag, temperaturer);
+                });
+            })
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: klockslag,
+                datasets: [{
+                    label: '# of Votes',
+                    data: temperaturer,
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 <?php
 include "konfigdb.php";
 session_start();
+if (!isset($_SESSION['inloggad'])) {
+    $_SESSION['inloggad'] = false;
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,31 +18,43 @@ session_start();
 </head>
 
 <body>
+    <?php
+    if (isset($_SESSION['inloggad']) && $_SESSION['inloggad'] == true) {
+        echo "<p class=\"alert alert-success\">Du är inloggad</p>";
+    } else {
+        echo "<p class=\"alert alert-warning\">Du är utloggad</p>";
+    }
+    ?>
     <div class="kontainer">
         <h1>Bloggen</h1>
         <nav>
-        <ul class="nav nav-pills">
-        <?php
-            if ( $_SESSION['inloggad'] == false) {
-        ?>
-        <li class="nav-item">
-        <a class="nav-link active" href="login.php">Logga in</a>
-        </li>
-        <?php
-        }            
-        ?>
-        <li class="nav-item">
-        <a class="nav-link" href="registrera.php">Registrera</a>
-        </li>
-
-  <li class="nav-item">
-    <a class="nav-link active" href="logout.php">Logga ut</a>
-  </li>
-</ul>
+            <ul class="nav nav-pills">
+                <?php
+                if ($_SESSION['inloggad'] == false) {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="login.php">Logga in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="registrera.php">Registrera</a>
+                    </li>
+                <?php
+                } else {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logga ut</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin.php">Admin</a>
+                    </li>
+                <?php
+                }
+                ?>
+            </ul>
         </nav>
         <main>
             <form action="login.php" method="POST">
-            <h3>Logga in</h3>
+                <h3>Logga in</h3>
                 <div class="row mb-3">
                 </div>
                 <div class="row mb-3">
@@ -67,7 +82,7 @@ session_start();
 
 
         // Kolla så att det INTE är NULL
-            if ($email && $lösen) {
+        if ($email && $lösen) {
 
             // Kontrollera att användarnamnet eller emailen inte redan används
             $sql = "SELECT * FROM `register` WHERE epost='$email'";
@@ -79,17 +94,19 @@ session_start();
             if (!$resultat) {
                 die("<p class=\"alert alert-warning\">Någonting blev fel med SQL-satsen!</p>");
             } else {
-                
+
                 // Plocka ut svaret och lägg det i arrayen $rad
                 $rad = $resultat->fetch_assoc();
-                
-                
+
+
                 // Kolla om lösenordet och hashen passar
                 if (password_verify($lösen, $rad['hash'])) {
                     echo "<p class=\"alert alert-success\">Du är inloggad</p>";
 
                     // Kom ihåg att vi lyckats logga in
                     $_SESSION['inloggad'] = true;
+
+                    header("Location: admin.php");
                 } else {
                     echo "<p class\"alert alert-warning\">Epost eller lösenordet stämmer inte</p>";
                 }

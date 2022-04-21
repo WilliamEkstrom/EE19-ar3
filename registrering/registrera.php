@@ -1,6 +1,9 @@
 <?php
 include "konfigdb.php";
 session_start();
+if (!isset($_SESSION['inloggad'])) {
+    $_SESSION['inloggad'] = false;
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,34 +19,42 @@ session_start();
 
 <body>
     <?php
-        if ($_SESSION['inloggad'] == true ) {
-            echo "<p class=\"alert alert-success\">Du är inloggad</p>";
-        }
+    if (isset($_SESSION['inloggad']) && $_SESSION['inloggad'] == true) {
+        echo "<p class=\"alert alert-success\">Du är inloggad</p>";
+    } else {
+        echo "<p class=\"alert alert-warning\">Du är utloggad</p>";
+    }
     ?>
     <div class="kontainer">
         <h1>Bloggen</h1>
         <nav>
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-             <a class="nav-link active" aria-current="page" href="registrera.php">Registrera</a>
-             </li>     
-             <?php
-            if ( $_SESSION['inloggad'] == false) {
-        ?>
-        <li class="nav-item">
-        <a class="nav-link active" href="login.php">Logga in</a>
-        </li>
-        <?php
-        }            
-        ?>
-  <li class="nav-item">
-    <a class="nav-link active" href="logout.php">Logga ut</a>
-  </li>
-</ul>
+            <ul class="nav nav-pills">
+                <?php
+                if ($_SESSION['inloggad'] == false) {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Logga in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="registrera.php">Registrera</a>
+                    </li>
+                <?php
+                } else {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logga ut</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin.php">Admin</a>
+                    </li>
+                <?php
+                }
+                ?>
+            </ul>
         </nav>
         <main>
             <form action="registrera.php" method="POST">
-            <h3>Registrera</h3>
+                <h3>Registrera</h3>
                 <div class="row mb-3">
                     <label for="inputNamn" class="col-sm-2 col-form-label">Namn</label>
                     <div class="col-sm-10">
@@ -106,9 +117,7 @@ session_start();
                 } else {
                     echo "<p class=\"alert alert-success\">Användaren $namn är registrerad</p>";
                 }
-
             }
-            
         };
 
         ?>
