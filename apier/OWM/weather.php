@@ -29,7 +29,7 @@
 
         // Plocka ut data vi är intresserade av
         // Weather, Main, Wind, Coord
-        $coord = $dara->coord;
+        $coord = $data->coord;
         $weather = $data->weather;
         $main = $data->main;
         $wind = $data->wind;
